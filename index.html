@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYN SOLUTIONS – Data Solutions, Deciphered</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        :root {
+            /* New Theme: Midnight Blue & Cyan Accent */
+            --primary: #0F172A;      /* Midnight Navy */
+            --accent: #38BDF8;       /* Electric Cyan */
+            --secondary: #94A3B8;    /* Slate Gray */
+            --highlight: #10B981;    /* Emerald Green */
+            --background: #F9FAFB;   /* Off-White */
+
+            /* Mapping to old variable names for seamless integration */
+            --navy: var(--primary);
+            --dark: var(--primary);
+            --emerald: var(--accent); /* Main interactive color is now Cyan */
+            --gold: var(--accent);    /* Animated border is also Cyan */
+            --light: var(--background);
+            --gray: var(--secondary);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--dark);
+            color: #e5e7eb; /* Default light text for readability on dark background */
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* iPhone-style bold fonts */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700 !important;
+        }
+        
+        .font-extrabold {
+            font-weight: 800 !important;
+        }
+        
+        .font-bold {
+            font-weight: 700 !important;
+        }
+        
+        .font-semibold {
+            font-weight: 600 !important;
+        }
+        
+        .bg-navy { background-color: var(--navy); }
+        .text-navy { color: var(--navy); }
+        .bg-emerald { background-color: var(--emerald); }
+        .text-emerald { color: var(--emerald); }
+        .bg-gold { background-color: var(--gold); }
+        .text-gold { color: var(--gold); }
+        .border-gold { border-color: var(--gold); }
+        
+        html { scroll-behavior: smooth; }
+        
+        .service-card {
+            transition: all 0.3s ease;
+            background: #1e293b;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(56, 189, 248, 0.3); /* Cyan Accent */
+        }
+        
+        .service-icon {
+            height: 80px;
+            width: 80px;
+            margin: 2rem auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--emerald);
+            background: rgba(56, 189, 248, 0.1); /* Cyan Accent */
+            border-radius: 50%;
+        }
+        
+        .service-content {
+            padding: 0 2rem 2rem;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--background); /* Use the lightest color for headers */
+        }
+        
+        .service-content p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            min-height: 80px;
+            flex-grow: 1;
+        }
+        
+        .service-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+        }
+        
+        .tech-tag {
+            background: rgba(56, 189, 248, 0.1); /* Cyan Accent */
+            color: var(--emerald);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .services-carousel {
+            padding-bottom: 4rem;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--emerald);
+        }
+        .swiper-pagination-bullet-active {
+            background: var(--emerald);
+        }
+
+        .tab-btn {
+            color: var(--gray);
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+        }
+        .tab-btn:hover {
+            color: var(--background);
+        }
+        .tab-active {
+            color: var(--emerald) !important;
+            font-weight: 700 !important;
+            border-bottom-color: var(--emerald);
+        }
+        .case-card {
+            background: var(--background); /* Use Off-White Background */
+            border-radius: 12px;
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+            padding: 2.5rem;
+        }
+        @media (min-width: 768px) {
+            .case-card {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+        .case-right {
+            background: rgba(15, 23, 42, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .kpi-badge {
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi-badge::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, var(--gold), transparent 30%); /* var(--gold) is now Cyan */
+            animation: rotate 3s linear infinite;
+        }
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .video-background {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--background);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--emerald); /* Cyan Accent */
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 1rem auto 0;
+            font-size: 1.1rem;
+        }
+        
+        /* Beautified Technology Stack Styles */
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .tech-item:hover {
+            background: rgba(56, 189, 248, 0.1); /* Cyan Accent */
+            border-color: rgba(56, 189, 248, 0.3); /* Cyan Accent */
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .tech-item i {
+            font-size: 1.5rem;
+            color: var(--emerald);
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Mobile-specific improvements */
+        @media (max-width: 768px) {
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-buttons a {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+            
+            .tab-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .case-card {
+                padding: 1.5rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
+            }
+            
+            .service-card {
+                margin: 0 10px;
+            }
+            
+            .section-title {
+                margin-bottom: 2.5rem;
+            }
+            
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-container iframe {
+                height: 120%;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <header id="header" class="bg-navy/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-extrabold text-emerald">RYN SOLUTIONS</a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#services" class="text-gray-300 hover:text-emerald transition-colors duration-300 font-medium">Services</a>
+                <a href="#industries" class="text-gray-300 hover:text-emerald transition-colors duration-300 font-medium">Industries</a>
+                <a href="#trust" class="text-gray-300 hover:text-emerald transition-colors duration-300 font-medium">Trust</a>
+                <a href="#why-ryn" class="text-gray-300 hover:text-emerald transition-colors duration-300 font-medium">Why RYN?</a>
+                <a href="#contact" class="bg-emerald text-white font-bold px-5 py-2 rounded-lg hover:bg-sky-400 transition-all duration-300 shadow-sm">Contact Us</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
+            <a href="#services" class="block py-2 text-gray-300 hover:text-emerald font-medium">Services</a>
+            <a href="#industries" class="block py-2 text-gray-300 hover:text-emerald font-medium">Industries</a>
+            <a href="#trust" class="block py-2 text-gray-300 hover:text-emerald font-medium">Trust</a>
+            <a href="#why-ryn" class="block py-2 text-gray-300 hover:text-emerald font-medium">Why RYN?</a>
+            <a href="#contact" class="block mt-2 bg-emerald text-white text-center font-bold px-5 py-2 rounded-lg hover:bg-sky-400 transition-all duration-300">Contact Us</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="bg-navy text-white relative min-h-screen flex items-center overflow-hidden">
+            <div class="video-container">
+                <iframe 
+                    src="https://streamable.com/e/aovy1j?autoplay=1&muted=1&loop=1&controls=0" 
+                    class="video-background"
+                    frameborder="0" 
+                    allow="autoplay; fullscreen" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+            <div class="container mx-auto px-4 py-24 text-center relative z-10">
+                <div class="inline-block bg-white/20 backdrop-blur-sm px-6 py-2 rounded-full mb-6">
+                    <span class="text-emerald font-bold">99% Client Satisfaction</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">Decoding Complexity, Delivering Clarity</h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">RYN SOLUTIONS bridges the gap between data and decisions—with precision analytics, rigorous research, and cutting-edge AI.</p>
+                <div class="flex flex-wrap justify-center gap-4 hero-buttons">
+                    <a href="#services" class="bg-emerald text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-sky-400 transition-all duration-300 transform hover:scale-105">
+                        Explore Our Services &rarr;
+                    </a>
+                    <a href="#contact" class="bg-white/20 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-white/30 transition-all duration-300 transform hover:scale-105">
+                        Get a Consultation
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="trust" class="py-16 md:py-20 bg-dark">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white">Trusted by Industry Leaders</h2>
+                    <p class="text-lg text-gray-400 mt-2">We measure our success by the success of our clients</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <div class="stat-card p-6 rounded-xl text-center">
+                        <div class="text-5xl font-extrabold text-emerald mb-2">99<sup class="text-xl">%</sup></div>
+                        <h3 class="text-xl font-bold text-white mb-2">Client Satisfaction</h3>
+                        <p class="text-gray-400">Based on post-project surveys</p>
+                    </div>
+                    <div class="stat-card p-6 rounded-xl text-center">
+                        <div class="text-5xl font-extrabold text-emerald mb-2">96<sup class="text-xl">%</sup></div>
+                        <h3 class="text-xl font-bold text-white mb-2">Client Retention</h3>
+                        <p class="text-gray-400">Year-over-year growth</p>
+                    </div>
+                    <div class="stat-card p-6 rounded-xl text-center">
+                        <div class="text-5xl font-extrabold text-emerald mb-2">150<sup class="text-xl">+</sup></div>
+                        <h3 class="text-xl font-bold text-white mb-2">Projects Delivered</h3>
+                        <p class="text-gray-400">Across 5 industries</p>
+                    </div>
+                    <div class="stat-card p-6 rounded-xl text-center">
+                        <div class="text-5xl font-extrabold text-emerald mb-2">24<sup class="text-xl">/7</sup></div>
+                        <h3 class="text-xl font-bold text-white mb-2">Support</h3>
+                        <p class="text-gray-400">Dedicated client success team</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-navy to-sky-900 p-6 md:p-8 rounded-2xl text-white">
+                    <div class="max-w-4xl mx-auto text-center">
+                        <h3 class="text-2xl font-bold mb-4">Our Commitment to Excellence</h3>
+                        <p class="mb-6 text-gray-200">At RYN Solutions, we don't just deliver data - we deliver confidence. Our rigorous quality assurance process ensures every insight is statistically significant, every model is bias-checked, and every recommendation is actionable.</p>
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <div class="kpi-badge bg-white text-navy font-bold py-2 px-5 rounded-full relative overflow-hidden">
+                                <span class="relative z-10">p < 0.01 Validation</span>
+                            </div>
+                            <div class="kpi-badge bg-white text-navy font-bold py-2 px-5 rounded-full relative overflow-hidden">
+                                <span class="relative z-10">99.9% Uptime SLA</span>
+                            </div>
+                            <div class="kpi-badge bg-white text-navy font-bold py-2 px-5 rounded-full relative overflow-hidden">
+                                <span class="relative z-10">GDPR Compliant</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="industries" class="py-16 md:py-20 bg-gray-900">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl font-bold text-white mb-2">Trusted Across Industries</h2>
+                <p class="text-gray-400 mb-10">We provide specialized data solutions for leaders in diverse sectors.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center">
+                    <div class="flex flex-col items-center p-4 rounded-lg bg-gray-800 shadow-sm">
+                        <svg class="w-14 h-14 md:w-16 md:h-16 text-emerald mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9M3 12a9 9 0 009 9"></path></svg>
+                        <span class="font-semibold text-lg text-white">Healthcare</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 rounded-lg bg-gray-800 shadow-sm">
+                        <svg class="w-14 h-14 md:w-16 md:h-16 text-emerald mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <span class="font-semibold text-lg text-white">Finance</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 rounded-lg bg-gray-800 shadow-sm">
+                         <svg class="w-14 h-14 md:w-16 md:h-16 text-emerald mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <span class="font-semibold text-lg text-white">E-Commerce</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 rounded-lg bg-gray-800 shadow-sm">
+                         <svg class="w-14 h-14 md:w-16 md:h-16 text-emerald mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <span class="font-semibold text-lg text-white">Government</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 rounded-lg bg-gray-800 shadow-sm">
+                         <svg class="w-14 h-14 md:w-16 md:h-16 text-emerald mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222 4 2.222V20M12 14L8 12"></path></svg>
+                        <span class="font-semibold text-lg text-white">Academia</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="services py-16 md:py-20 bg-dark" id="services">
+            <div class="container mx-auto px-4">
+                <div class="section-title">
+                    <h2>Our Core Services</h2>
+                    <p>Comprehensive data solutions tailored to your business needs</p>
+                </div>
+                
+                <div class="swiper services-carousel">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide h-auto">
+                            <div class="service-card">
+                                <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                                <div class="service-content">
+                                    <h3>Data Analytics</h3>
+                                    <p>Transform raw data into actionable insights with our comprehensive analytics solutions. Identify trends, patterns, and opportunities.</p>
+                                    <div class="service-tech">
+                                        <span class="tech-tag">Python</span>
+                                        <span class="tech-tag">R</span>
+                                        <span class="tech-tag">SQL</span>
+                                        <span class="tech-tag">Tableau</span>
+                                    </div>
+                                    <a href="#case-studies" class="learn-more-btn bg-emerald text-white font-bold px-4 py-2 rounded-lg inline-block mt-auto hover:bg-sky-400 transition-colors" data-tab="data-analytics">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="swiper-slide h-auto">
+                             <div class="service-card">
+                                <div class="service-icon"><i class="fas fa-flask"></i></div>
+                                <div class="service-content">
+                                    <h3>Research Analytics</h3>
+                                    <p>Advanced statistical analysis for academic, market, and scientific research. Publication-ready visuals and reports.</p>
+                                    <div class="service-tech">
+                                        <span class="tech-tag">SPSS</span>
+                                        <span class="tech-tag">Stata</span>
+                                        <span class="tech-tag">SAS</span>
+                                        <span class="tech-tag">R</span>
+                                    </div>
+                                    <a href="#case-studies" class="learn-more-btn bg-emerald text-white font-bold px-4 py-2 rounded-lg inline-block mt-auto hover:bg-sky-400 transition-colors" data-tab="research-analytics">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="swiper-slide h-auto">
+                            <div class="service-card">
+                                <div class="service-icon"><i class="fas fa-database"></i></div>
+                                <div class="service-content">
+                                    <h3>Data Science</h3>
+                                    <p>Predictive analytics, algorithmic modeling, and full data pipeline development tailored to your business.</p>
+                                    <div class="service-tech">
+                                        <span class="tech-tag">Python</span>
+                                        <span class="tech-tag">PySpark</span>
+                                        <span class="tech-tag">TensorFlow</span>
+                                        <span class="tech-tag">AWS</span>
+                                    </div>
+                                    <a href="#case-studies" class="learn-more-btn bg-emerald text-white font-bold px-4 py-2 rounded-lg inline-block mt-auto hover:bg-sky-400 transition-colors" data-tab="data-science">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="swiper-slide h-auto">
+                             <div class="service-card">
+                                <div class="service-icon"><i class="fas fa-robot"></i></div>
+                                <div class="service-content">
+                                    <h3>Machine Learning</h3>
+                                    <p>AI-driven forecasting, anomaly detection, and model deployment for real-world applications.</p>
+                                    <div class="service-tech">
+                                        <span class="tech-tag">Scikit-learn</span>
+                                        <span class="tech-tag">PyTorch</span>
+                                        <span class="tech-tag">SageMaker</span>
+                                        <span class="tech-tag">MLOps</span>
+                                    </div>
+                                    <a href="#case-studies" class="learn-more-btn bg-emerald text-white font-bold px-4 py-2 rounded-lg inline-block mt-auto hover:bg-sky-400 transition-colors" data-tab="machine-learning">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </section>
+
+<section id="case-studies" class="py-16 md:py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="section-title">
+            <h2>From Data to Decisions</h2>
+            <p>See how our tailored solutions drive real-world results.</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-2 mb-8 tab-buttons">
+            <button class="tab-btn tab-active px-4 py-2 text-base md:px-6 md:py-3 md:text-lg font-medium" data-tab="data-analytics">Data Analytics</button>
+            <button class="tab-btn px-4 py-2 text-base md:px-6 md:py-3 md:text-lg font-medium" data-tab="research-analytics">Research Analytics</button>
+            <button class="tab-btn px-4 py-2 text-base md:px-6 md:py-3 md:text-lg font-medium" data-tab="data-science">Data Science</button>
+            <button class="tab-btn px-4 py-2 text-base md:px-6 md:py-3 md:text-lg font-medium" data-tab="machine-learning">Machine Learning</button>
+        </div>
+
+        <div id="tab-content">
+            <!-- Data Analytics Tab -->
+            <div class="tab-pane active" id="data-analytics">
+                <div class="case-card mb-8">
+                    <div class="case-left">
+                        <h3 class="text-2xl font-bold text-slate-900">Transform Raw Data into Strategic Actions</h3>
+                        <p class="text-slate-600 mt-3">Data is abundant—but insights are rare. We audit, model, and visualize your data to uncover the 'why' behind the numbers, empowering you to optimize and grow.</p>
+                        <ul class="mt-4 space-y-3 text-slate-700">
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Descriptive & Diagnostic Analytics</li>
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Predictive Modeling & Custom KPI Development</li>
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Dashboarding (Power BI, Tableau, Looker)</li>
+                        </ul>
+                    </div>
+                    <div class="case-right">
+                        <h4 class="font-semibold text-slate-900">Case Study Snapshot</h4>
+                        <p class="mt-2 text-slate-700"><strong>Client:</strong> A retail chain struggling with inventory waste.</p>
+                        <p class="text-slate-700"><strong>Solution:</strong> Built a demand-forecasting model (Python + Prophet).</p>
+                        <p class="mt-3 text-slate-800"><strong class="font-bold text-emerald-600">Result:</strong> 30% reduction in overstock costs.</p>
+                        <a href="https://wa.me/233203349361?text=Hello%20RYN%20SOLUTIONS,%20I'm%20interested%20in%20a%20Data%20Analytics%20assessment." target="_blank" class="block mt-4 bg-emerald-500 text-white px-4 py-2 rounded-md text-center hover:bg-emerald-600 transition-colors">Book a Free Data Assessment</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research Analytics Tab -->
+            <div class="tab-pane hidden" id="research-analytics">
+                <div class="case-card mb-8">
+                    <div class="case-left">
+                        <h3 class="text-2xl font-bold text-slate-900">Evidence-Based Insights for Academia & Industry</h3>
+                        <p class="text-slate-600 mt-3">We provide the statistical rigor needed for peer-reviewed validation and high-stakes business decisions, ensuring your conclusions are defensible and robust.</p>
+                        <ul class="mt-4 space-y-3 text-slate-700">
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Experimental Design & A/B Testing</li>
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Longitudinal & Qualitative Data Analysis</li>
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Peer-Reviewed Statistical Validation</li>
+                        </ul>
+                    </div>
+                    <div class="case-right">
+                        <h4 class="font-semibold text-slate-900">Case Study Snapshot</h4>
+                        <p class="mt-2 text-slate-700"><strong>Client:</strong> A public health NGO.</p>
+                        <p class="text-slate-700"><strong>Solution:</strong> Designed and analyzed a longitudinal study on intervention effectiveness.</p>
+                        <p class="mt-3 text-slate-800"><strong class="font-bold text-emerald-600">Result:</strong> Findings published in a high-impact journal, securing next-round funding.</p>
+                        <a href="https://wa.me/233203349361?text=Hello%20RYN%20SOLUTIONS,%20I'm%20interested%20in%20a%20Research%20Analytics%20assessment." target="_blank" class="block mt-4 bg-emerald-500 text-white px-4 py-2 rounded-md text-center hover:bg-emerald-600 transition-colors">Discuss Your Research</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Science Tab -->
+            <div class="tab-pane hidden" id="data-science">
+                <div class="case-card mb-8">
+                    <div class="case-left">
+                        <h3 class="text-2xl font-bold text-slate-900">Scalable AI Pipelines for Enterprise Problems</h3>
+                        <p class="text-slate-600 mt-3">We architect and build end-to-end data science solutions that handle massive datasets and solve complex challenges like NLP and computer vision.</p>
+                        <ul class="mt-4 space-y-3 text-slate-700">
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Data Wrangling & Feature Engineering</li>
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Algorithm Development (NLP, Computer Vision)</li>
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Big Data Architecture (Spark, Hadoop)</li>
+                        </ul>
+                    </div>
+                    <div class="case-right">
+                        <h4 class="font-semibold text-slate-900">Case Study Snapshot</h4>
+                        <p class="mt-2 text-slate-700"><strong>Client:</strong> A major bank needing to analyze text data.</p>
+                        <p class="text-slate-700"><strong>Solution:</strong> Developed an NLP pipeline to classify customer feedback from millions of emails.</p>
+                        <p class="mt-3 text-slate-800"><strong class="font-bold text-emerald-600">Result:</strong> 90% accuracy in identifying urgent issues, reducing response time by 75%.</p>
+                        <a href="https://wa.me/233203349361?text=Hello%20RYN%20SOLUTIONS,%20I'm%20interested%20in%20a%20Data%20Science%20Services." target="_blank" class="block mt-4 bg-emerald-500 text-white px-4 py-2 rounded-md text-center hover:bg-emerald-600 transition-colors">Architect Your AI Solution</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Machine Learning Tab -->
+            <div class="tab-pane hidden" id="machine-learning">
+                <div class="case-card mb-8">
+                    <div class="case-left">
+                        <h3 class="text-2xl font-bold text-slate-900">Future-Proof Your Business with Intelligent Systems</h3>
+                        <p class="text-slate-600 mt-3">We build, deploy, and maintain custom machine learning models that automate processes, enhance user experiences, and create sustainable competitive advantages.</p>
+                        <ul class="mt-4 space-y-3 text-slate-700">
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Custom ML Model Development & Deployment</li>
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>MLOps & Explainable AI (XAI) Audits</li>
+                            <li><span class="text-emerald-500 font-bold mr-2">✓</span>Recommendation Engines & Anomaly Detection</li>
+                        </ul>
+                    </div>
+                    <div class="case-right">
+                        <h4 class="font-semibold text-slate-900">Case Study Snapshot</h4>
+                        <p class="mt-2 text-slate-700"><strong>Client:</strong> An e-commerce platform.</p>
+                        <p class="text-slate-700"><strong>Solution:</strong> Deployed a real-time recommendation engine using MLOps principles.</p>
+                        <p class="mt-3 text-slate-800"><strong class="font-bold text-emerald-600">Result:</strong> 15% increase in average order value and a 20% lift in user engagement.</p>
+                        <a href="https://wa.me/233203349361?text=Hello%20RYN%20SOLUTIONS,%20I'm%20interested%20in%20a%20Machine%20Learning%20Services." target="_blank" class="block mt-4 bg-emerald-500 text-white px-4 py-2 rounded-md text-center hover:bg-emerald-600 transition-colors">Deploy Your ML Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+        <section id="why-ryn" class="py-16 md:py-20 bg-dark">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                     <h2 class="text-3xl md:text-4xl font-extrabold text-white">The RYN Advantage</h2>
+                     <p class="text-lg text-gray-400 mt-2">We're more than consultants; we're your strategic partners in data.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg text-center border-t-4 border-emerald shadow-sm">
+                        <div class="text-4xl mb-4">🔍</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Depth + Breadth</h3>
+                        <p class="text-gray-400">From essential Excel analysis to complex neural networks, our expertise covers the full data spectrum.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg text-center border-t-4 border-emerald shadow-sm">
+                        <div class="text-4xl mb-4">📊</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Interpretability</h3>
+                        <p class="text-gray-400">We don't deliver black boxes. We explain the 'why' behind the numbers so you can act with confidence.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg text-center border-t-4 border-emerald shadow-sm">
+                        <div class="text-4xl mb-4">🛠️</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Tool-Agnostic</h3>
+                        <p class="text-gray-400">Our loyalty is to solving your problem, not to a specific tool. We match the right tech to your unique challenge.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg text-center border-t-4 border-emerald shadow-sm">
+                        <div class="text-4xl mb-4">🔒</div>
+                        <h3 class="text-xl font-bold text-white mb-2">Ethics-First</h3>
+                        <p class="text-gray-400">We are committed to responsible AI, offering bias audits and transparent methodologies.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="toolkit" class="py-16 md:py-20 bg-gray-900">
+             <div class="container mx-auto px-4 text-center">
+                <div class="section-title">
+                    <h2>Our Technology Stack</h2>
+                    <p>Leveraging industry-leading technology to deliver powerful results.</p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-xl p-6 md:p-8 max-w-4xl mx-auto text-left">
+                    <div class="grid md:grid-cols-2 gap-x-8 gap-y-6 tech-grid">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-4">Programming & Analytics</h3>
+                            <div class="flex flex-col gap-3">
+                                <div class="tech-item"><i class="fab fa-python"></i><span>Python</span></div>
+                                <div class="tech-item"><i class="fab fa-r-project"></i><span>R</span></div>
+                                <div class="tech-item"><i class="fas fa-database"></i><span>SQL</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-4">Machine Learning</h3>
+                            <div class="flex flex-col gap-3">
+                                <div class="tech-item"><i class="fas fa-brain"></i><span>TensorFlow & PyTorch</span></div>
+                                <div class="tech-item"><i class="fas fa-cogs"></i><span>Scikit-learn</span></div>
+                                <div class="tech-item"><i class="fab fa-aws"></i><span>AWS SageMaker</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-4">Visualization</h3>
+                            <div class="flex flex-col gap-3">
+                                <div class="tech-item"><i class="fas fa-chart-bar"></i><span>Power BI</span></div>
+                                <div class="tech-item"><i class="fas fa-chart-pie"></i><span>Tableau</span></div>
+                                <div class="tech-item"><i class="fas fa-chart-line"></i><span>Looker</span></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-4">Data Management</h3>
+                            <div class="flex flex-col gap-3">
+                                <div class="tech-item"><i class="fas fa-bolt"></i><span>Spark & Hadoop</span></div>
+                                <div class="tech-item"><i class="fas fa-file-excel"></i><span>Excel</span></div>
+                                <div class="tech-item"><i class="fas fa-file-spreadsheet"></i><span>Google Sheets</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="contact" class="bg-navy text-white">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="md:col-span-1">
+                    <h3 class="text-2xl font-extrabold mb-2 text-emerald">RYN SOLUTIONS</h3>
+                    <p class="text-gray-400">Data Solutions, Deciphered.</p>
+                    <p class="text-gray-400 mt-2">From Insight to Impact.</p>
+                    <div class="mt-6">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-emerald mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <span>+233 20 334 9361</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-emerald mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <span>rynsolutions@protonmail.com</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="text-gray-400 hover:text-white">Services</a></li>
+                        <li><a href="#industries" class="text-gray-400 hover:text-white">Industries</a></li>
+                        <li><a href="#trust" class="text-gray-400 hover:text-white">Trust</a></li>
+                        <li><a href="#why-ryn" class="text-gray-400 hover:text-white">Why RYN?</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Get In Touch</h4>
+                    <p class="text-gray-400 mb-2">Ready to unlock the power of your data?</p>
+                    <a href="https://wa.me/233203349361?text=Hello%20RYN%20SOLUTIONS,%20I'd%20like%20to%20book%20a%20consultation." target="_blank" class="bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-600 transition-all duration-300 inline-block mt-4">
+                        Book a Consultation
+                    </a>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-700 text-center text-gray-500">
+                <p>&copy; 2025 RYN SOLUTIONS. All Rights Reserved. Based in Accra, Ghana.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            gsap.registerPlugin(ScrollTrigger);
+            
+            gsap.from('.stat-card', {
+                scrollTrigger: {
+                    trigger: '#trust',
+                    start: 'top 80%'
+                },
+                y: 50,
+                opacity: 0,
+                stagger: 0.1,
+                duration: 0.8
+            });
+
+            const swiper = new Swiper('.services-carousel', {
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 30,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            const learnMoreButtons = document.querySelectorAll('.learn-more-btn');
+            const caseStudiesSection = document.getElementById('case-studies');
+
+            function showTab(tabId) {
+                tabPanes.forEach(pane => {
+                    if (pane.id === tabId) {
+                        pane.classList.remove('hidden');
+                        pane.classList.add('active');
+                    } else {
+                        pane.classList.add('hidden');
+                        pane.classList.remove('active');
+                    }
+                });
+                tabButtons.forEach(button => {
+                    if (button.dataset.tab === tabId) {
+                        button.classList.add('tab-active');
+                    } else {
+                        button.classList.remove('tab-active');
+                    }
+                });
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    showTab(button.dataset.tab);
+                });
+            });
+            
+            learnMoreButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const tabId = button.dataset.tab;
+                    
+                    caseStudiesSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    showTab(tabId);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
